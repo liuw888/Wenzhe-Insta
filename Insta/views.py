@@ -19,6 +19,9 @@ class PostsView(ListView):
 
     def get_queryset(self):
         current_user = self.request.user
+        if not current_user.is_authenticated:
+            return Post.objects
+            
         following = set()
         for conn in UserConnection.objects.filter(creator=current_user).select_related('following'):
             following.add(conn.following)
